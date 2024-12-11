@@ -4,6 +4,12 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import time
 from dotenv import load_dotenv
 import os
+import logging
+import json
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
 
 # Load environment variables from .env file
 load_dotenv()
@@ -18,45 +24,59 @@ DB_PORT = os.getenv("DB_PORT")
 # Fetch weather data from OpenWeatherMap
 def fetch_weather_data(city):
     url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        print(f"Weather data fetched for {city}.")
-        return response.json()
-    else:
-        print(f"Failed to fetch data: {response.status_code}")
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            logger.info(f"Weather data fetched for {city}.")
+            logger.debug(f"The data is: {response.json()}")
+            return response.json()
+        else:
+            logger.error(f"Failed to fetch data: {response.status_code}")
+            return None
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error fetching weather data for {city}: {e}")
         return None
+    
 
 # Save raw data to PostgreSQL
 def save_to_postgres(data):
     try:
+
+        # Convert the data dict into a JSON string
+        data_json = json.dumps(data)
+
+
         conn = psycopg2.connect(
             host=DB_HOST,
-            database=DB_NAME,
+            dbname=DB_NAME,
             user=DB_USER,
             password=DB_PASSWORD,
             port=DB_PORT
         )
 
         cursor = conn.cursor()
+
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS weather_raw (
                 id SERIAL PRIMARY KEY,
                 city TEXT,
                 data JSONB,
                 timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
+            );
         """)
+
         cursor.execute(
             "INSERT INTO weather_raw (city, data) VALUES (%s, %s)",
-            (data['name'], data)
+            (data['name'], data_json)
         )
+
         conn.commit()
         cursor.close()
         conn.close()
-        print("Data saved to PostgreSQL.")
+        logger.info("Data saved to PostgreSQL.")
 
     except Exception as e:
-        print(f"Error saving data to Postgres: {e}")
+        logger.error(f"Error saving data to Postgres: {e}")
 
 # Periodic task to fetch and store data
 def fetch_and_store():
@@ -70,13 +90,16 @@ def start_scheduler():
     scheduler = BackgroundScheduler()
     scheduler.add_job(fetch_and_store, 'interval', minutes=60)  # Fetch every hour
     scheduler.start()
-    print("Scheduler started. Press Ctrl+C to exit.")
+    logger.info("Scheduler started")
     try:
         while True:
             time.sleep(1)
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()
-        print("Scheduler stopped.")
+        logger.info("Scheduler stopped.")
 
 if __name__ == "__main__":
+    # Initial data fetch
+    logger.info("Starting the initial data fetch...")
+    fetch_and_store()
     start_scheduler()

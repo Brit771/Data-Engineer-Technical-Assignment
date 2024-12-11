@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   postgres:
@@ -17,10 +17,11 @@ services:
   weather_service:
     build:
       context: .
+      dockerfile: Dockerfile
     container_name: weather_service
     restart: always
     environment:
-      - OPENWEATHER_API_KEY=your_api_key
+      - OPENWEATHER_API_KEY=key
       - DB_HOST=postgres
       - DB_NAME=weather_data
       - DB_USER=user
@@ -29,7 +30,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./weather_service:/app
+      -  ./weather_service.py:/app/weather_service.py
 
 volumes:
   postgres_data:

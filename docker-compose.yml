@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: weather_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: weather_data
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  weather_service:
+    build:
+      context: .
+    container_name: weather_service
+    restart: always
+    environment:
+      - OPENWEATHER_API_KEY=your_api_key
+      - DB_HOST=postgres
+      - DB_NAME=weather_data
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_PORT=5432
+    depends_on:
+      - postgres
+    volumes:
+      - ./weather_service:/app
+
+volumes:
+  postgres_data:
+    driver: local

@@ -11,7 +11,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 # Configuration & Logging
 # -----------------------
 # Environment Variables
-API_KEY = os.getenv("OPENWEATHER_API_KEY")
+with open('/run/secrets/openweather_api_key', 'r') as f:
+    API_KEY = f.read().strip()
+
 DB_CONFIG = {
     "host": os.getenv("DB_HOST"),
     "dbname": os.getenv("DB_NAME"),
@@ -62,6 +64,35 @@ def fetch_weather_data(city):
         return None
     
 
+def validate_weather_data(city, data):
+    """Validate weather data and log invalid fields."""
+    invalid_fields = []
+
+    # Check required fields
+    if 'dt' not in data or not isinstance(data['dt'], int):
+        invalid_fields.append({'field': 'dt', 'value': data.get('dt')})
+
+    if 'main' in data:
+        main = data['main']
+        if 'temp' not in main or not isinstance(main['temp'], (int, float)):
+            invalid_fields.append({'field': 'temp', 'value': main.get('temp')})
+        if 'humidity' not in main or not isinstance(main['humidity'], int):
+            invalid_fields.append({'field': 'humidity', 'value': main.get('humidity')})
+        if 'pressure' not in main or not isinstance(main['pressure'], int):
+            invalid_fields.append({'field': 'pressure', 'value': main.get('pressure')})
+
+    if 'wind' in data:
+        wind = data['wind']
+        if 'speed' not in wind or not isinstance(wind['speed'], (int, float)):
+            invalid_fields.append({'field': 'wind_speed', 'value': wind.get('speed')})
+
+    if invalid_fields:
+        logger.warning(f"Skipping invalid data for {city}: {invalid_fields}")
+        return False
+
+    return True
+
+
 def save_raw_data(city, data):
     """Save raw weather data to the weather_raw table."""
     try:
@@ -96,7 +127,6 @@ def extract_location_data(city, data):
 
 def extract_time_data(timestamp):
     """Extract time dimension data from a UNIX timestamp."""
-    from datetime import datetime
     dt = datetime.fromtimestamp(timestamp, tz=timezone.utc)
     return dt.year, dt.month, dt.day, dt.hour, dt.minute
 
@@ -116,7 +146,7 @@ def extract_fact_data(location_id, time_id, data):
 # ---------------------
 
 def insert_location_data(cursor, city, data):
-    """Insert location data into the dim_location table."""
+    """Insert location data into dim_location and return location_id"""
     location_data = extract_location_data(city, data)
     cursor.execute(
         """
@@ -168,6 +198,9 @@ def populate_data_warehouse():
 
             for record in raw_records:
                 raw_id, city, data = record
+
+                if not validate_weather_data(city, data):
+                    continue
 
                 location_id = insert_location_data(cursor, city, data)
                 time_id = insert_time_data(cursor, data["dt"])

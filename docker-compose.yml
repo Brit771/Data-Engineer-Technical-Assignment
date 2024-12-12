@@ -15,6 +15,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d weather_data"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   weather_service:
     build:
@@ -22,19 +27,25 @@ services:
       dockerfile: Dockerfile
     container_name: weather_service
     restart: always
+    secrets:
+      - openweather_api_key
     environment:
-      - OPENWEATHER_API_KEY=327a141e771a86e79222bcd41cd58fcb
       - DB_HOST=postgres
       - DB_NAME=weather_data
       - DB_USER=user
       - DB_PASSWORD=password
       - DB_PORT=5432
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     volumes:
       - ./weather_service.py:/app/weather_service.py
       - ./schema.sql:/app/schema.sql
 
+secrets:
+  openweather_api_key:
+    file: ./openweather_api_key.txt
+    
 volumes:
   postgres_data:
     driver: local

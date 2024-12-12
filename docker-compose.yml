@@ -1,3 +1,5 @@
+
+
 # version: '3.8'
 
 services:
@@ -21,7 +23,7 @@ services:
     container_name: weather_service
     restart: always
     environment:
-      - OPENWEATHER_API_KEY=key
+      - OPENWEATHER_API_KEY=327a141e771a86e79222bcd41cd58fcb
       - DB_HOST=postgres
       - DB_NAME=weather_data
       - DB_USER=user
@@ -30,7 +32,8 @@ services:
     depends_on:
       - postgres
     volumes:
-      -  ./weather_service.py:/app/weather_service.py
+      - ./weather_service.py:/app/weather_service.py
+      - ./schema.sql:/app/schema.sql
 
 volumes:
   postgres_data:

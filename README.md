@@ -38,22 +38,22 @@ This project is a data engineering assignment that fetches weather data from the
 
 1. Clone the repository
 
-   ```bash
+```bash
    git clone <repository_url>
    cd data-engineer-technical-assignment
-   ```
+```
 
 2. Save your API key as a Docker secret:
 
-   ```bash
+```bash
     echo "your_api_key" > openweather_api_key
-    ```
+```
 
 3. Start the project
 
-    ```bash
+```bash
     docker-compose up --build
-    ```
+```
 
 ## Functionality
 

@@ -16,13 +16,14 @@ This project is a data engineering assignment that fetches weather data from the
 
 ## Project Structure
 
-data-engineer-technical-assignment/
-├── weather_service.py    # Main Python script for data processing
-├── schema.sql            # SQL schema for database initialization
-├── docker-compose.yml    # Docker setup for PostgreSQL and weather service
-├── Dockerfile            # Docker image for the weather service
-├── requirements.txt      # Python dependencies
-└── README.md             # Project documentation
+    data-engineer-technical-assignment/
+
+    ├── weather_service.py    # Main Python script for data processing
+    ├── schema.sql            # SQL schema for database initialization
+    ├── docker-compose.yml    # Docker setup for PostgreSQL and weather service
+    ├── Dockerfile            # Docker image for the weather service
+    ├── requirements.txt      # Python dependencies
+    └── README.md             # Project documentation
 
 ---
 

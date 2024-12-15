@@ -18,8 +18,25 @@ This project is a data engineering assignment that fetches weather data from the
 
     data-engineer-technical-assignment/
 
-    ├── weather_service.py    # Main Python script for data processing
-    ├── schema.sql            # SQL schema for database initialization
+    ├── main.py               # Main Python script for weather service
+    ├── config/            
+    ├────── constant.py           
+    ├────── logging_config.py           
+    ├── db/            
+    ├────── connection.py
+    ├────── initialize_database.py 
+    ├────── schema.sql            # SQL schema for database initialization
+    ├── extract/            
+    ├────── fetch_data.py
+    ├────── validate_data.py
+    ├── transform/            
+    ├────── transform_weather.py
+    ├── load/            
+    ├────── insert_raw_data.py
+    ├────── insert_transformed_data.py
+    ├── workflows/            
+    ├────── process_weather_data.py
+    ├────── scheduler.py
     ├── docker-compose.yml    # Docker setup for PostgreSQL and weather service
     ├── Dockerfile            # Docker image for the weather service
     ├── requirements.txt      # Python dependencies
@@ -39,7 +56,7 @@ This project is a data engineering assignment that fetches weather data from the
 1. Clone the repository
 
 ```bash
-   git clone <repository_url>
+   git clone https://github.com/Brit771/Data-Engineer-Technical-Assignment.git
    cd data-engineer-technical-assignment
 ```
 

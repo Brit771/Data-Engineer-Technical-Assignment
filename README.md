@@ -56,20 +56,20 @@ This project is a data engineering assignment that fetches weather data from the
 1. Clone the repository
 
 ```bash
-   git clone https://github.com/Brit771/Data-Engineer-Technical-Assignment.git
-   cd data-engineer-technical-assignment
+git clone https://github.com/Brit771/Data-Engineer-Technical-Assignment.git
+cd data-engineer-technical-assignment
 ```
 
 2. Save your API key as a Docker secret:
 
 ```bash
-    echo "your_api_key" > openweather_api_key
+echo "your_api_key" > openweather_api_key
 ```
 
 3. Start the project
 
 ```bash
-    docker-compose up --build
+docker-compose up --build
 ```
 
 ## Functionality
@@ -98,6 +98,14 @@ This project is a data engineering assignment that fetches weather data from the
 
 3. Scheduler
     - Runs every 60 minutes to fetch and process data.
+
+## Future Improvements
+
+1. **Parallel Execution**: Optimize performance by running data fetching and processing for each city in parallel using Python's multiprocessing or threading modules.
+
+2. **Handle Invalid Data**: Save invalid data into a separate file (e.g., `invalid_data.json`) for review and correction, enabling reprocessing and proper database insertion.
+
+3. **Add Tests**: Implement unit and integration tests for key functions, including API calls, data validation, and database operations.
 
 ## Logs and Validation
 

@@ -17,8 +17,13 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy your Python script to the working directory
-COPY weather_service.py .
-# COPY .env .
+COPY config/ ./config/
+COPY db/ ./db/
+COPY extract/ ./extract/
+COPY transform/ ./transform/
+COPY load/ ./load/
+COPY workflows/ ./workflows/
+COPY main.py .
 
 # Run the service
-CMD ["python", "weather_service.py"]
+CMD ["python", "main.py"]

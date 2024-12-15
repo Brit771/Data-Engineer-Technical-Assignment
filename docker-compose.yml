@@ -1,5 +1,3 @@
-
-
 # version: '3.8'
 
 services:
@@ -39,8 +37,14 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - ./weather_service.py:/app/weather_service.py
-      - ./schema.sql:/app/schema.sql
+      - ./config:/app/config
+      - ./db:/app/db
+      - ./extract:/app/extract
+      - ./transform:/app/transform
+      - ./load:/app/load
+      - ./workflows:/app/workflows
+      - ./main.py:/app/main.py
+      - /etc/localtime:/etc/localtime:ro
 
 secrets:
   openweather_api_key:

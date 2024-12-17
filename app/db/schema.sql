@@ -32,5 +32,6 @@ CREATE TABLE IF NOT EXISTS weather_fact (
     temperature DOUBLE PRECISION,
     humidity INT,
     wind_speed DOUBLE PRECISION,
-    pressure INT
+    pressure INT,
+    UNIQUE (timestamp_id, location_id)
 );

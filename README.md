@@ -37,6 +37,7 @@ This project is a data engineering assignment that fetches weather data from the
     ├──── workflows/            
     ├──────── process_weather_data.py
     ├──────── scheduler.py
+    ├──────── Tables_Samples/ # Contains samples for all the tables and script for export them locally.
     ├── docker-compose.yml    # Docker setup for PostgreSQL and weather service
     ├── Dockerfile            # Docker image for the weather service
     ├── requirements.txt      # Python dependencies
@@ -46,12 +47,21 @@ This project is a data engineering assignment that fetches weather data from the
 
 ## Functionality
 
-### Tables
+### Database Schema
 
-- weather_raw: Stores raw JSON weather data.
+#### 1. Raw Table
+
+- weather_raw: Stores raw JSON data fetched from the API.
+
+#### 2. Data Warehouse Schema
+
 - dim_location: Contains city and geographic data.
-- dim_time: Stores date-time information.
-- weather_fact: Stores weather metrics for analysis.
+- dim_time: Stores time dimension data.
+- weather_fact: Stores cleaned weather metrics.
+
+Purpose: Holds cleaned and structured data for analysis.
+
+A samples for all tables can be found in Tables_Samples folder.
 
 ### Workflow
 

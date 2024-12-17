@@ -1,8 +1,23 @@
 from datetime import datetime, timezone
+from config.logging_config import logger
 
 def extract_location_data(city, data):
     """Extract location information from raw data."""
-    return city, data.get("sys", {}).get("country"), data.get("coord", {}).get("lat"), data.get("coord", {}).get("lon")
+    try:
+        country = data.get("sys", {}).get("country")
+        latitude = data.get("coord", {}).get("lat")
+        longitude = data.get("coord", {}).get("lon")
+
+        # Validate extracted data
+        if latitude is None or longitude is None:
+            logger.error(f"Missing latitude/longitude for city '{city}': {data}")
+            return None
+
+        return city, country, latitude, longitude
+    except Exception as e:
+        logger.error(f"Error extracting location data for city '{city}': {e}")
+        return None
+
 
 def extract_time_data(timestamp):
     """Extract time dimension data from a UNIX timestamp."""

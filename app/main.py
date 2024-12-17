@@ -8,7 +8,7 @@ if __name__ == "__main__":
     initialize_database()
 
     logger.info("Starting the initial data fetch and processing...")
-    # process_weather_data()
+    process_weather_data()
 
     logger.info("Starting the scheduler...")
     start_scheduler()

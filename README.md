@@ -17,60 +17,32 @@ This project is a data engineering assignment that fetches weather data from the
 ## Project Structure
 
     data-engineer-technical-assignment/
-
-    ├── main.py               # Main Python script for weather service
-    ├── config/            
-    ├────── constant.py           
-    ├────── logging_config.py           
-    ├── db/            
-    ├────── connection.py
-    ├────── initialize_database.py 
-    ├────── schema.sql            # SQL schema for database initialization
-    ├── extract/            
-    ├────── fetch_data.py
-    ├────── validate_data.py
-    ├── transform/            
-    ├────── transform_weather.py
-    ├── load/            
-    ├────── insert_raw_data.py
-    ├────── insert_transformed_data.py
-    ├── workflows/            
-    ├────── process_weather_data.py
-    ├────── scheduler.py
+    ├── app/
+    ├──── main.py               # Main Python script for weather service
+    ├──── config/            
+    ├──────── constant.py           
+    ├──────── logging_config.py           
+    ├──── db/            
+    ├──────── connection.py
+    ├──────── initialize_database.py 
+    ├──────── schema.sql            # SQL schema for database initialization
+    ├──── extract/            
+    ├──────── fetch_data.py
+    ├──────── validate_data.py
+    ├──── transform/            
+    ├──────── transform_weather.py
+    ├──── load/            
+    ├──────── insert_raw_data.py
+    ├──────── insert_transformed_data.py
+    ├──── workflows/            
+    ├──────── process_weather_data.py
+    ├──────── scheduler.py
     ├── docker-compose.yml    # Docker setup for PostgreSQL and weather service
     ├── Dockerfile            # Docker image for the weather service
     ├── requirements.txt      # Python dependencies
     └── README.md             # Project documentation
 
 ---
-
-## Prerequisites
-
-1. **Docker**: Install Docker and Docker Compose.
-2. **OpenWeather API Key**: Obtain an API key from [OpenWeather](https://openweathermap.org/api).
-
----
-
-## Setup
-
-1. Clone the repository
-
-```bash
-git clone https://github.com/Brit771/Data-Engineer-Technical-Assignment.git
-cd data-engineer-technical-assignment
-```
-
-2. Save your API key as a Docker secret:
-
-```bash
-echo "your_api_key" > openweather_api_key
-```
-
-3. Start the project
-
-```bash
-docker-compose up --build
-```
 
 ## Functionality
 
@@ -99,13 +71,50 @@ docker-compose up --build
 3. Scheduler
     - Runs every 60 minutes to fetch and process data.
 
+### Data quality checks ensure
+
+- No null values in critical fields.
+- Valid date format
+- Valid temperature range
+
 ## Future Improvements
 
 1. **Parallel Execution**: Optimize performance by running data fetching and processing for each city in parallel using Python's multiprocessing or threading modules.
 
 2. **Handle Invalid Data**: Save invalid data into a separate file (e.g., `invalid_data.json`) for review and correction, enabling reprocessing and proper database insertion.
 
-3. **Add Tests**: Implement unit and integration tests for key functions, including API calls, data validation, and database operations.
+3. **Indexing**: Create an index on the city column in the weather_raw table to optimize query performance
+
+4. **Add Tests**: Implement unit and integration tests for key functions, including API calls, data validation, and database operations.
+
+---
+
+## Prerequisites
+
+1. **Docker**: Install Docker and Docker Compose.
+2. **OpenWeather API Key**: Obtain an API key from [OpenWeather](https://openweathermap.org/api).
+
+## Setup
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/Brit771/Data-Engineer-Technical-Assignment.git
+cd data-engineer-technical-assignment
+```
+
+2. Save your API key as a Docker secret:
+
+```bash
+echo "your_api_key" > openweather_api_key
+```
+
+3. Start the project
+
+```bash
+docker-compose up --build
+```
+
 
 ## Logs and Validation
 
@@ -114,8 +123,3 @@ docker-compose up --build
 ```bash
 docker logs weather_service
 ```
-
-- Data quality checks ensure
-  - No null values in critical fields.
-  - Valid ranges for weather metrics.
-  - Deduplication of rows.

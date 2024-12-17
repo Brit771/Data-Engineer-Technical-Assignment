@@ -26,11 +26,14 @@ def extract_time_data(timestamp):
 
 def extract_fact_data(location_id, time_id, data):
     """Extract fact weather data from raw data."""
-    return (
-        location_id,
-        time_id,
-        data.get("main", {}).get("temp"),
-        data.get("main", {}).get("humidity"),
-        data.get("wind", {}).get("speed"),
-        data.get("main", {}).get("pressure")
-    )
+    main = data.get("main", {})
+    fact_data = ( 
+                time_id,
+                location_id,
+                main.get("temp"),
+                main.get("humidity"),
+                data.get("wind", {}).get("speed"),
+                main.get("pressure")
+                )
+    
+    return fact_data

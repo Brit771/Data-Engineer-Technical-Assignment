@@ -47,7 +47,7 @@ This project is a data engineering assignment that fetches weather data from the
 
 ## Functionality
 
-### Database Schema
+### Database Schema 🗃️
 
 #### 1. Raw Table
 
@@ -61,7 +61,7 @@ This project is a data engineering assignment that fetches weather data from the
 
 **Tables samples**: Can be found in [Tables_Samples folder](https://github.com/Brit771/Data-Engineer-Technical-Assignment/tree/main/Tables_Samples).
 
-### Workflow
+### Workflow 🔁
 
 1. Raw Data
 
@@ -79,13 +79,13 @@ This project is a data engineering assignment that fetches weather data from the
 3. Scheduler
     - Runs every 60 minutes to fetch and process data.
 
-### Data quality checks ensure
+### Data quality checks ensure ✅
 
 - No null values in critical fields.
 - Valid date format
 - Valid temperature range
 
-## Future Improvements
+## Future Improvements 🚀
 
 1. **Parallel Execution**: Optimize performance by running data fetching and processing for each city in parallel using Python's multiprocessing or threading modules.
 
@@ -97,7 +97,7 @@ This project is a data engineering assignment that fetches weather data from the
 
 ---
 
-## Prerequisites
+## Prerequisites ⚙️
 
 1. **Docker**: Install Docker and Docker Compose.
 2. **OpenWeather API Key**: Obtain an API key from [OpenWeather](https://openweathermap.org/api).

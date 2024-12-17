@@ -7,7 +7,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 def start_scheduler():
     """Start the APScheduler for periodic weather data processing."""
     scheduler = BackgroundScheduler()
-    scheduler.add_job(process_weather_data, 'interval', minutes=11)
+    scheduler.add_job(process_weather_data, 'interval', minutes=60)
     scheduler.start()
     logger.info("Scheduler started.")
     try:

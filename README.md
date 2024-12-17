@@ -59,9 +59,7 @@ This project is a data engineering assignment that fetches weather data from the
 - dim_time: Stores time dimension data.
 - weather_fact: Stores cleaned weather metrics.
 
-Purpose: Holds cleaned and structured data for analysis.
-
-A samples for all tables can be found in Tables_Samples folder.
+**Tables samples**: Can be found in [Tables_Samples folder](https://github.com/Brit771/Data-Engineer-Technical-Assignment/tree/main/Tables_Samples).
 
 ### Workflow
 
